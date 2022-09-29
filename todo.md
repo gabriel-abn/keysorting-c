@@ -1,5 +1,0 @@
-- [ ] Modularizar funções da primeira prova
-  - [ ] Funções específicas de funcionário
-  - [ ] Funções específicas de leitura e escrita em arquivo
-  - [ ] Funções de ordenação.
-- [ ] Refazer menu principal para suportar funcionalidades da [segunda prova](./prova2.md)
