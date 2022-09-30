@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "menu.h"
 #include "func.h"
+#include "prova2.h"
 
 void MENU_OPCOES()
 {
@@ -135,6 +136,10 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       // SAIR
       printf("Saindo...\n");
       exit(0);
+      break;
+    case 6:
+      arquivo = fopen("dados.dat", "rb");
+      selecaoSubstituicao(arquivo,6,quantidadeFuncionario);
       break;
 
     default:
