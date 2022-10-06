@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "menu.h"
 #include "func.h"
+#include "selecao-natural.h"
 
 void MENU_OPCOES()
 {
@@ -37,6 +38,11 @@ void CLEAR_CONSOLE()
   system("clear");
 }
 
+void iniciarLista(Lista *list)
+{
+  list = cria("p1.dat", cria("p2.dat", cria("p3.dat", cria("p4.dat", cria("p5.dat", cria("p6.dat", cria("p7.dat", cria("p8.dat", cria("p9.dat", cria("p10.dat", NULL))))))))));
+}
+
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
 {
   bool ordenado = false;
@@ -45,6 +51,7 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
   int op;
   arquivo = fopen("dados.dat", "rb+");
   Funcionario *func;
+
   do
   {
     MENU_OPCOES();
@@ -135,6 +142,13 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       // SAIR
       printf("Saindo...\n");
       exit(0);
+      break;
+    case 6:
+      arquivo = fopen("BANCO_DE_DADOS.dat", "rb");
+      Lista *list;
+      iniciarLista(list);
+      printf("chamada selecao\n");
+      selecao_natural(arquivo, list, 6, 100, 3);
       break;
 
     default:
