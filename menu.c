@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "menu.h"
 #include "func.h"
+#include "prova2.h"
 #include "selecao-natural.h"
 
 void MENU_OPCOES()
@@ -149,6 +150,10 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       iniciarLista(list);
       printf("chamada selecao\n");
       selecao_natural(arquivo, list, 6, 100, 3);
+      break;
+    case 7:
+      arquivo = fopen("dados.dat", "rb");
+      selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
       break;
 
     default:
