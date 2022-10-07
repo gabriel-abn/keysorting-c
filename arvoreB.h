@@ -4,9 +4,10 @@
 #define MAX 3
 #define MIN 2
 
-typedef struct no_arvoreB {
+typedef struct no_arvoreB
+{
   int val[MAX + 1], count;
-  struct BTreeNode *link[MAX + 1];
+  struct no_arvoreB *link[MAX + 1];
 } NoArvoreB;
 
 typedef NoArvoreB *raiz;
