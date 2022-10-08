@@ -2,34 +2,34 @@
 #include <stdlib.h>
 #include "arvoreB.h"
 
-NoArvoreB *createNode(int val, NoArvoreB *child)
+NoArvoreB *criarNo(int val, NoArvoreB *child)
 {
-  NoArvoreB *newNode;
-  newNode = (NoArvoreB *)malloc(sizeof(NoArvoreB));
-  newNode->val[1] = val;
-  newNode->count = 1;
-  newNode->link[0] = raiz;
-  newNode->link[1] = child;
-  return newNode;
+  NoArvoreB *noAux;
+  noAux = (NoArvoreB *)malloc(sizeof(NoArvoreB));
+  noAux->valor[1] = val;
+  noAux->count = 1;
+  noAux->prox[0] = raiz;
+  noAux->prox[1] = child;
+  return noAux;
 }
 
 // Insert node
-void insertNode(int val, int pos, NoArvoreB *node, NoArvoreB *child)
+void InserirNo(int val, int pos, NoArvoreB *node, NoArvoreB *child)
 {
   int j = node->count;
   while (j > pos)
   {
-    node->val[j + 1] = node->val[j];
-    node->link[j + 1] = node->link[j];
+    node->valor[j + 1] = node->valor[j];
+    node->prox[j + 1] = node->prox[j];
     j--;
   }
-  node->val[j + 1] = val;
-  node->link[j + 1] = child;
+  node->valor[j + 1] = val;
+  node->prox[j + 1] = child;
   node->count++;
 }
 
 // Split node
-void splitNode(int val, int *pval, int pos, NoArvoreB *node, NoArvoreB *child, NoArvoreB **newNode)
+void DividirNo(int val, int *pval, int pos, NoArvoreB *node, NoArvoreB *child, NoArvoreB **newNode)
 {
   int median, j;
 
@@ -42,8 +42,8 @@ void splitNode(int val, int *pval, int pos, NoArvoreB *node, NoArvoreB *child, N
   j = median + 1;
   while (j <= MAX)
   {
-    (*newNode)->val[j - median] = node->val[j];
-    (*newNode)->link[j - median] = node->link[j];
+    (*newNode)->valor[j - median] = node->valor[j];
+    (*newNode)->prox[j - median] = node->prox[j];
     j++;
   }
   node->count = median;
@@ -51,19 +51,19 @@ void splitNode(int val, int *pval, int pos, NoArvoreB *node, NoArvoreB *child, N
 
   if (pos <= MIN)
   {
-    insertNode(val, pos, node, child);
+    InserirNo(val, pos, node, child);
   }
   else
   {
-    insertNode(val, pos - median, *newNode, child);
+    InserirNo(val, pos - median, *newNode, child);
   }
-  *pval = node->val[node->count];
-  (*newNode)->link[0] = node->link[node->count];
+  *pval = node->valor[node->count];
+  (*newNode)->prox[0] = node->prox[node->count];
   node->count--;
 }
 
 // Set the value
-int setValue(int val, int *pval, NoArvoreB *node, NoArvoreB **child)
+int AtribuirValor(int val, int *pval, NoArvoreB *node, NoArvoreB **child)
 {
   int pos;
 
@@ -74,29 +74,29 @@ int setValue(int val, int *pval, NoArvoreB *node, NoArvoreB **child)
     return 1;
   }
 
-  if (val < node->val[1])
+  if (val < node->valor[1])
   {
     pos = 0;
   }
   else
   {
-    for (pos = node->count; (val < node->val[pos] && pos > 1); pos--)
+    for (pos = node->count; (val < node->valor[pos] && pos > 1); pos--)
       ;
-    if (val == node->val[pos])
+    if (val == node->valor[pos])
     {
       printf("Duplicates are not permitted\n");
       return 0;
     }
   }
-  if (setValue(val, pval, node->link[pos], child))
+  if (AtribuirValor(val, pval, node->prox[pos], child))
   {
     if (node->count < MAX)
     {
-      insertNode(*pval, pos, node, *child);
+      InserirNo(*pval, pos, node, *child);
     }
     else
     {
-      splitNode(*pval, pval, pos, node, *child, child);
+      DividirNo(*pval, pval, pos, node, *child, child);
       return 1;
     }
   }
@@ -104,42 +104,42 @@ int setValue(int val, int *pval, NoArvoreB *node, NoArvoreB **child)
 }
 
 // Insert the value
-void insert(int val)
+void Inserir(int val)
 {
   int flag, i;
   NoArvoreB *child;
 
-  flag = setValue(val, &i, raiz, &child);
+  flag = AtribuirValor(val, &i, raiz, &child);
   if (flag)
   {
-    raiz = createNode(i, child);
+    raiz = criarNo(i, child);
   }
 }
 
 // Search node
-void search(int val, int *pos, NoArvoreB *myNode)
+void Procurar(int val, int *pos, NoArvoreB *myNode)
 {
   if (!myNode)
   {
     return;
   }
 
-  if (val < myNode->val[1])
+  if (val < myNode->valor[1])
   {
     *pos = 0;
   }
   else
   {
     for (*pos = myNode->count;
-         (val < myNode->val[*pos] && *pos > 1); (*pos)--)
+         (val < myNode->valor[*pos] && *pos > 1); (*pos)--)
       ;
-    if (val == myNode->val[*pos])
+    if (val == myNode->valor[*pos])
     {
       printf("%d is found", val);
       return;
     }
   }
-  search(val, pos, myNode->link[*pos]);
+  Procurar(val, pos, myNode->prox[*pos]);
 
   return;
 }
@@ -152,9 +152,139 @@ void traversal(NoArvoreB *myNode)
   {
     for (i = 0; i < myNode->count; i++)
     {
-      traversal(myNode->link[i]);
-      printf("%d ", myNode->val[i + 1]);
+      traversal(myNode->prox[i]);
+      printf("%d ", myNode->valor[i + 1]);
     }
-    traversal(myNode->link[i]);
+    traversal(myNode->prox[i]);
+  }
+}
+
+// Copy the successor
+void copySuccessor(NoArvoreB *myNode, int pos)
+{
+  NoArvoreB *dummy;
+  dummy = myNode->prox[pos];
+
+  for (; dummy->prox[0] != NULL;)
+    dummy = dummy->prox[0];
+  myNode->valor[pos] = dummy->valor[1];
+}
+
+// Do rightshift
+void rightShift(NoArvoreB *myNode, int pos)
+{
+  NoArvoreB *x = myNode->prox[pos];
+  int j = x->count;
+
+  while (j > 0)
+  {
+    x->valor[j + 1] = x->valor[j];
+    x->prox[j + 1] = x->prox[j];
+  }
+  x->valor[1] = myNode->valor[pos];
+  x->prox[1] = x->prox[0];
+  x->count++;
+
+  x = myNode->prox[pos - 1];
+  myNode->valor[pos] = x->valor[x->count];
+  myNode->prox[pos] = x->prox[x->count];
+  x->count--;
+  return;
+}
+
+// Do leftshift
+void leftShift(NoArvoreB *myNode, int pos)
+{
+  int j = 1;
+  NoArvoreB *x = myNode->prox[pos - 1];
+
+  x->count++;
+  x->valor[x->count] = myNode->valor[pos];
+  x->prox[x->count] = myNode->prox[pos]->prox[0];
+
+  x = myNode->prox[pos];
+  myNode->valor[pos] = x->valor[1];
+  x->prox[0] = x->prox[1];
+  x->count--;
+
+  while (j <= x->count)
+  {
+    x->valor[j] = x->valor[j + 1];
+    x->prox[j] = x->prox[j + 1];
+    j++;
+  }
+  return;
+}
+
+// Merge the nodes
+void mergeNodes(NoArvoreB *myNode, int pos)
+{
+  int j = 1;
+  NoArvoreB *x1 = myNode->prox[pos], *x2 = myNode->prox[pos - 1];
+
+  x2->count++;
+  x2->valor[x2->count] = myNode->valor[pos];
+  x2->prox[x2->count] = myNode->prox[0];
+
+  while (j <= x1->count)
+  {
+    x2->count++;
+    x2->valor[x2->count] = x1->valor[j];
+    x2->prox[x2->count] = x1->prox[j];
+    j++;
+  }
+
+  j = pos;
+  while (j < myNode->count)
+  {
+    myNode->valor[j] = myNode->valor[j + 1];
+    myNode->prox[j] = myNode->prox[j + 1];
+    j++;
+  }
+  myNode->count--;
+  free(x1);
+}
+
+// Adjust the node
+void adjustNode(NoArvoreB *myNode, int pos)
+{
+  if (!pos)
+  {
+    if (myNode->prox[1]->count > MIN)
+    {
+      leftShift(myNode, 1);
+    }
+    else
+    {
+      mergeNodes(myNode, 1);
+    }
+  }
+  else
+  {
+    if (myNode->count != pos)
+    {
+      if (myNode->prox[pos - 1]->count > MIN)
+      {
+        rightShift(myNode, pos);
+      }
+      else
+      {
+        if (myNode->prox[pos + 1]->count > MIN)
+        {
+          leftShift(myNode, pos + 1);
+        }
+        else
+        {
+          mergeNodes(myNode, pos);
+        }
+      }
+    }
+    else
+    {
+      if (myNode->prox[pos - 1]->count > MIN)
+        rightShift(myNode, pos);
+      else
+        mergeNodes(myNode, pos);
+    }
   }
 }

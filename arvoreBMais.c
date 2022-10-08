@@ -5,9 +5,9 @@
 #include "arvoreBMais.h"
 
 // Enqueue
-void enqueue(node *new_node)
+void enqueue(No *new_node)
 {
-  node *c;
+  No *c;
   if (queue == NULL)
   {
     queue = new_node;
@@ -26,16 +26,16 @@ void enqueue(node *new_node)
 }
 
 // Dequeue
-node *dequeue(void)
+No *dequeue(void)
 {
-  node *n = queue;
+  No *n = queue;
   queue = queue->next;
   n->next = NULL;
   return n;
 }
 
 // Print the leaves
-void printLeaves(node *const root)
+void printLeaves(No *const root)
 {
   if (root == NULL)
   {
@@ -43,7 +43,7 @@ void printLeaves(node *const root)
     return;
   }
   int i;
-  node *c = root;
+  No *c = root;
   while (!c->is_leaf)
     c = c->pointers[0];
   while (true)
@@ -68,10 +68,10 @@ void printLeaves(node *const root)
 }
 
 // Calculate height
-int height(node *const root)
+int height(No *const root)
 {
   int h = 0;
-  node *c = root;
+  No *c = root;
   while (!c->is_leaf)
   {
     c = c->pointers[0];
@@ -81,10 +81,10 @@ int height(node *const root)
 }
 
 // Get path to root
-int pathToLeaves(node *const root, node *child)
+int pathToLeaves(No *const root, No *child)
 {
   int length = 0;
-  node *c = child;
+  No *c = child;
   while (c != root)
   {
     c = c->parent;
@@ -94,9 +94,9 @@ int pathToLeaves(node *const root, node *child)
 }
 
 // Print the tree
-void printTree(node *const root)
+void printTree(No *const root)
 {
-  node *n = NULL;
+  No *n = NULL;
   int i = 0;
   int rank = 0;
   int new_rank = 0;
@@ -144,20 +144,18 @@ void printTree(node *const root)
 }
 
 // Find the node and print it
-void findAndPrint(node *const root, int key, bool verbose)
+void findAndPrint(No *const root, int key, bool verbose)
 {
-  node *leaf = NULL;
+  No *leaf = NULL;
   record *r = find(root, key, verbose, NULL);
   if (r == NULL)
     printf("Record not found under key %d.\n", key);
   else
-    printf("Record at %p -- key %d, value %d.\n",
-           r, key, r->value);
+    printf("Record at %p -- key %d, value %d.\n", r, key, r->value);
 }
 
 // Find and print the range
-void findAndPrintRange(node *const root, int key_start, int key_end,
-                       bool verbose)
+void findAndPrintRange(No *const root, int key_start, int key_end, bool verbose)
 {
   int i;
   int array_size = key_end - key_start + 1;
@@ -180,12 +178,11 @@ void findAndPrintRange(node *const root, int key_start, int key_end,
 }
 
 // Find the range
-int findRange(node *const root, int key_start, int key_end, bool verbose,
-              int returned_keys[], void *returned_pointers[])
+int findRange(No *const root, int key_start, int key_end, bool verbose, int returned_keys[], void *returned_pointers[])
 {
   int i, num_found;
   num_found = 0;
-  node *n = findLeaf(root, key_start, verbose);
+  No *n = findLeaf(root, key_start, verbose);
   if (n == NULL)
     return 0;
   for (i = 0; i < n->num_keys && n->keys[i] < key_start; i++)
@@ -207,7 +204,7 @@ int findRange(node *const root, int key_start, int key_end, bool verbose,
 }
 
 // Find the leaf
-node *findLeaf(node *const root, int key, bool verbose)
+No *findLeaf(No *const root, int key, bool verbose)
 {
   if (root == NULL)
   {
@@ -216,7 +213,7 @@ node *findLeaf(node *const root, int key, bool verbose)
     return root;
   }
   int i = 0;
-  node *c = root;
+  No *c = root;
   while (!c->is_leaf)
   {
     if (verbose)
@@ -236,7 +233,7 @@ node *findLeaf(node *const root, int key, bool verbose)
     }
     if (verbose)
       printf("%d ->\n", i);
-    c = (node *)c->pointers[i];
+    c = (No *)c->pointers[i];
   }
   if (verbose)
   {
@@ -248,7 +245,7 @@ node *findLeaf(node *const root, int key, bool verbose)
   return c;
 }
 
-record *find(node *root, int key, bool verbose, node **leaf_out)
+record *find(No *root, int key, bool verbose, No **leaf_out)
 {
   if (root == NULL)
   {
@@ -260,7 +257,7 @@ record *find(node *root, int key, bool verbose, node **leaf_out)
   }
 
   int i = 0;
-  node *leaf = NULL;
+  No *leaf = NULL;
 
   leaf = findLeaf(root, key, verbose);
 
@@ -300,10 +297,10 @@ record *makeRecord(int value)
   return new_record;
 }
 
-node *makeNode(void)
+No *makeNode(void)
 {
-  node *new_node;
-  new_node = malloc(sizeof(node));
+  No *new_node;
+  new_node = malloc(sizeof(No));
   if (new_node == NULL)
   {
     perror("Node creation.");
@@ -328,14 +325,14 @@ node *makeNode(void)
   return new_node;
 }
 
-node *makeLeaf(void)
+No *makeLeaf(void)
 {
-  node *leaf = makeNode();
+  No *leaf = makeNode();
   leaf->is_leaf = true;
   return leaf;
 }
 
-int getLeftIndex(node *parent, node *left)
+int getLeftIndex(No *parent, No *left)
 {
   int left_index = 0;
   while (left_index <= parent->num_keys &&
@@ -344,7 +341,7 @@ int getLeftIndex(node *parent, node *left)
   return left_index;
 }
 
-node *insertIntoLeaf(node *leaf, int key, record *pointer)
+No *insertIntoLeaf(No *leaf, int key, record *pointer)
 {
   int i, insertion_point;
 
@@ -363,9 +360,9 @@ node *insertIntoLeaf(node *leaf, int key, record *pointer)
   return leaf;
 }
 
-node *insertIntoLeafAfterSplitting(node *root, node *leaf, int key, record *pointer)
+No *insertIntoLeafAfterSplitting(No *root, No *leaf, int key, record *pointer)
 {
-  node *new_leaf;
+  No *new_leaf;
   int *temp_keys;
   void **temp_pointers;
   int insertion_index, split, new_key, i, j;
@@ -436,8 +433,7 @@ node *insertIntoLeafAfterSplitting(node *root, node *leaf, int key, record *poin
   return insertIntoParent(root, leaf, new_key, new_leaf);
 }
 
-node *insertIntoNode(node *root, node *n,
-                     int left_index, int key, node *right)
+No *insertIntoNode(No *root, No *n, int left_index, int key, No *right)
 {
   int i;
 
@@ -452,15 +448,14 @@ node *insertIntoNode(node *root, node *n,
   return root;
 }
 
-node *insertIntoNodeAfterSplitting(node *root, node *old_node, int left_index,
-                                   int key, node *right)
+No *insertIntoNodeAfterSplitting(No *root, No *old_node, int left_index, int key, No *right)
 {
   int i, j, split, k_prime;
-  node *new_node, *child;
+  No *new_node, *child;
   int *temp_keys;
-  node **temp_pointers;
+  No **temp_pointers;
 
-  temp_pointers = malloc((order + 1) * sizeof(node *));
+  temp_pointers = malloc((order + 1) * sizeof(No *));
   if (temp_pointers == NULL)
   {
     exit(EXIT_FAILURE);
@@ -518,10 +513,10 @@ node *insertIntoNodeAfterSplitting(node *root, node *old_node, int left_index,
   return insertIntoParent(root, old_node, k_prime, new_node);
 }
 
-node *insertIntoParent(node *root, node *left, int key, node *right)
+No *insertIntoParent(No *root, No *left, int key, No *right)
 {
   int left_index;
-  node *parent;
+  No *parent;
 
   parent = left->parent;
 
@@ -536,9 +531,9 @@ node *insertIntoParent(node *root, node *left, int key, node *right)
   return insertIntoNodeAfterSplitting(root, parent, left_index, key, right);
 }
 
-node *insertIntoNewRoot(node *left, int key, node *right)
+No *insertIntoNewRoot(No *left, int key, No *right)
 {
-  node *root = makeNode();
+  No *root = makeNode();
   root->keys[0] = key;
   root->pointers[0] = left;
   root->pointers[1] = right;
@@ -549,9 +544,9 @@ node *insertIntoNewRoot(node *left, int key, node *right)
   return root;
 }
 
-node *startNewTree(int key, record *pointer)
+No *startNewTree(int key, record *pointer)
 {
-  node *root = makeLeaf();
+  No *root = makeLeaf();
   root->keys[0] = key;
   root->pointers[0] = pointer;
   root->pointers[order - 1] = NULL;
@@ -560,10 +555,10 @@ node *startNewTree(int key, record *pointer)
   return root;
 }
 
-node *insert(node *root, int key, int value)
+No *insert(No *root, int key, int value)
 {
   record *record_pointer = NULL;
-  node *leaf = NULL;
+  No *leaf = NULL;
 
   record_pointer = find(root, key, false, NULL);
   if (record_pointer != NULL)

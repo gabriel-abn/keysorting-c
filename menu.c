@@ -155,6 +155,9 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       arquivo = fopen("dados.dat", "rb");
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
       break;
+    case 8:
+
+      break;
 
     default:
       printf("Opcao invalida!\n");
