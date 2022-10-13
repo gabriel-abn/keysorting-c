@@ -154,6 +154,13 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
     case 7:
       arquivo = fopen("dados.dat", "rb");
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
+      // FILE *particao = fopen("particao.dat", "rb");
+      // for (int i = 0; i < quantidadeFuncionario; i++)
+      // {
+      //     fseek(particao, i * sizeof(Funcionario), SEEK_SET);
+      //     Funcionario show = *RecuperarFuncionario(particao);
+      //     ImprimirFuncionario(&show);
+      // }
       break;
     case 8:
 
