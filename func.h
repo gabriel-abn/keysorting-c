@@ -1,3 +1,6 @@
+#ifndef FUNC_H
+#define FUNC_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -29,3 +32,5 @@ void OrdenarArrayKeySorting(TKeySorting *array, int qtd_func);
 void KeySorting(FILE *arq, FILE *arq_ordenado, int qtd_func);
 void InsertionSort(int *array, int qtd_func);
 Funcionario *BuscaBinaria(int cod, int qtd_func, FILE *arquivo);
+
+#endif

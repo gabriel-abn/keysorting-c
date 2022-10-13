@@ -1,6 +1,11 @@
-BANCO_DE_DADOS.dat
-dados.dat
 PROVA1.zip
 main.exe
 requirements
 .vscode
+
+arvoreB.c
+arvoreB.h
+arvoreBMais.c
+arvoreBMais.h
+
+*.dat

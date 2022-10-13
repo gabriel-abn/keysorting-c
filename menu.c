@@ -39,9 +39,9 @@ void CLEAR_CONSOLE()
   system("clear");
 }
 
-void iniciarLista(Lista *list)
+Lista *iniciarLista()
 {
-  list = cria("p1.dat", cria("p2.dat", cria("p3.dat", cria("p4.dat", cria("p5.dat", cria("p6.dat", cria("p7.dat", cria("p8.dat", cria("p9.dat", cria("p10.dat", NULL))))))))));
+  Lista *list = cria("p1.dat", cria("p2.dat", cria("p3.dat", cria("p4.dat", cria("p5.dat", cria("p6.dat", cria("p7.dat", cria("p8.dat", cria("p9.dat", cria("p10.dat", NULL))))))))));
 }
 
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
@@ -145,18 +145,20 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       exit(0);
       break;
     case 6:
-      arquivo = fopen("BANCO_DE_DADOS.dat", "rb");
-      Lista *list;
-      iniciarLista(list);
+      arquivo = fopen("dados.dat", "rb");
+      Lista *list = iniciarLista();
+      if (arquivo == NULL)
+      {
+        printf("Erro!\n");
+        break;
+      }
       printf("chamada selecao\n");
-      selecao_natural(arquivo, list, 6, 100, 3);
+      imprime(list);
+      selecao_natural(arquivo, list, 6, 100, 6);
       break;
     case 7:
       arquivo = fopen("dados.dat", "rb");
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
-      break;
-    case 8:
-
       break;
 
     default:
