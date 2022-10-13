@@ -10,6 +10,7 @@
 typedef struct record
 {
   int value;
+  Funcionario reg;
 } record;
 
 // Node
