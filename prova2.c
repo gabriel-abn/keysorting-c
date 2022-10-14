@@ -17,109 +17,111 @@ void selecaoSubstituicao(FILE *arq, int m, int max)
     int prox = m;
     int menorCodigo = max + 1;
     int position = 0;
-/*    for(int iteration=0;iteration<max;iteration++)
-    {
-        printf("iteration: %d\n", iteration);
-        for (int i = 0; i < m; i++)
+    /*    for(int iteration=0;iteration<max;iteration++)
         {
-            if (prox < max)
+            printf("iteration: %d\n", iteration);
+            for (int i = 0; i < m; i++)
             {
-                fread(&aux, sizeof(Funcionario), 1, arq);
-                memory[i] = aux;
-                prox++;
+                if (prox < max)
+                {
+                    fread(&aux, sizeof(Funcionario), 1, arq);
+                    memory[i] = aux;
+                    prox++;
+                }
+                else
+                {
+            printf("prox>=max\n");
+                    memory[i].codigo = max + 1;
+                }
             }
-            else
+            for (int i = 0; i < m; i++)
             {
-        printf("prox>=max\n");
-                memory[i].codigo = max + 1;
+                if (memory[i].codigo < menorCodigo)
+                {
+                    menorCodigo = memory[i].codigo;
+                    menorFunc = memory[i];
+                    position = i;
+                    printf("Funcionario %s de codigo %d e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
+                }
             }
+            memory[position].codigo = max + 1;
+            menorCodigo = max + 1;
+            fwrite(&menorFunc, sizeof(Funcionario), 1, particao);
         }
-        for (int i = 0; i < m; i++)
+        rewind(particao);
+        rewind(arq);
+        int i = 0;
+        for (int iteration = 0; iteration < max; iteration++)
         {
-            if (memory[i].codigo < menorCodigo)
-            {
-                menorCodigo = memory[i].codigo;
-                menorFunc = memory[i];
-                position = i;
-                printf("Funcionario %s de codigo %d e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
-            }
-        }
-        memory[position].codigo = max + 1;
-        menorCodigo = max + 1;
-        fwrite(&menorFunc, sizeof(Funcionario), 1, particao);
-    }
-    rewind(particao);
-    rewind(arq);
-    int i = 0;
-    for (int iteration = 0; iteration < max; iteration++)
-    {
-        if (i == m)
-            i = 0;
-        fread(&aux, sizeof(Funcionario), 1, particao);
-        if (congelados[i].codigo == -1)
-        {
-            congelados[i] = aux;
-            i++;
-        }
-        else
-        {
-            if (aux.codigo < congelados[i].codigo)
-            {
-                fwrite(&aux, sizeof(Funcionario), 1, arq);
-            }
-            else
-            {
-                fwrite(&congelados[i], sizeof(Funcionario), 1, arq);
-                congelados[i] = aux;
-                i++;
-            }
-        }
-    }
-    for (int j = 0; j < m; j++)
-    {
-        if (congelados[j].codigo != -1)
-            fwrite(&congelados[j], sizeof(Funcionario), 1, arq);
-    }
-    fclose(particao);
-*/
-/**/
-for(int iteration=0;iteration<max;iteration++){
-    for (int i = 0; i < m; i++)
-    {
-        fseek(arq, i * sizeof(Funcionario), SEEK_SET);
-        memory[i] = *RecuperarFuncionario(arq);
-        if (memory[i].codigo < menorCodigo)
-        {
-            printf("||||||Funcionario %s de codigo %d e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
-            menorCodigo = memory[i].codigo;
-            menorFunc = memory[i];
-            position = i;
-        }else{
-            printf("Funcionario %s de codigo %d NAO e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
-        }
-    }
-    SalvarEmArquivo(&menorFunc, particao);
-    fseek(arq, prox * sizeof(Funcionario), SEEK_SET);
-    prox++;
-    aux = *RecuperarFuncionario(arq);
-    if (aux.codigo < menorCodigo)
-    {
-        printf("CONGELADO | Funcionario %s de codigo %d e menor que  %s de codigo %d\n", aux.nome, aux.codigo, menorFunc.nome, menorFunc.codigo);
-        for (int i = 0; i < max; i++)
-        {
+            if (i == m)
+                i = 0;
+            fread(&aux, sizeof(Funcionario), 1, particao);
             if (congelados[i].codigo == -1)
             {
                 congelados[i] = aux;
-                break;
+                i++;
+            }
+            else
+            {
+                if (aux.codigo < congelados[i].codigo)
+                {
+                    fwrite(&aux, sizeof(Funcionario), 1, arq);
+                }
+                else
+                {
+                    fwrite(&congelados[i], sizeof(Funcionario), 1, arq);
+                    congelados[i] = aux;
+                    i++;
+                }
             }
         }
-    }
-    else
+        for (int j = 0; j < m; j++)
+        {
+            if (congelados[j].codigo != -1)
+                fwrite(&congelados[j], sizeof(Funcionario), 1, arq);
+        }
+        fclose(particao);
+    */
+    /**/
+    for (int iteration = 0; iteration < max; iteration++)
     {
-        memory[position] = aux;
+        for (int i = 0; i < m; i++)
+        {
+            fseek(arq, i * sizeof(Funcionario), SEEK_SET);
+            memory[i] = *RecuperarFuncionario(arq);
+            if (memory[i].codigo < menorCodigo)
+            {
+                printf("||||||Funcionario %s de codigo %d e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
+                menorCodigo = memory[i].codigo;
+                menorFunc = memory[i];
+                position = i;
+            }
+            else
+            {
+                printf("Funcionario %s de codigo %d NAO e menor que  %s de codigo %d\n", memory[i].nome, memory[i].codigo, menorFunc.nome, menorFunc.codigo);
+            }
+        }
+        SalvarEmArquivo(&menorFunc, particao);
+        fseek(arq, prox * sizeof(Funcionario), SEEK_SET);
+        prox++;
+        aux = *RecuperarFuncionario(arq);
+        if (aux.codigo < menorCodigo)
+        {
+            printf("CONGELADO | Funcionario %s de codigo %d e menor que  %s de codigo %d\n", aux.nome, aux.codigo, menorFunc.nome, menorFunc.codigo);
+            for (int i = 0; i < max; i++)
+            {
+                if (congelados[i].codigo == -1)
+                {
+                    congelados[i] = aux;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            memory[position] = aux;
+        }
     }
-}
-
 
     /*for(int i=0;i<m;i++){
         ImprimirFuncionario(&memory[i]);

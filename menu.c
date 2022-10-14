@@ -41,7 +41,7 @@ void CLEAR_CONSOLE()
 
 Lista *iniciarLista()
 {
-  Lista *list = cria("p1.dat", cria("p2.dat", cria("p3.dat", cria("p4.dat", cria("p5.dat", cria("p6.dat", cria("p7.dat", cria("p8.dat", cria("p9.dat", cria("p10.dat", NULL))))))))));
+  Lista *list = CriarLista("p1.dat", CriarLista("p2.dat", CriarLista("p3.dat", CriarLista("p4.dat", CriarLista("p5.dat", CriarLista("p6.dat", CriarLista("p7.dat", CriarLista("p8.dat", CriarLista("p9.dat", CriarLista("p10.dat", NULL))))))))));
 }
 
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
@@ -153,8 +153,8 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
         break;
       }
       printf("chamada selecao\n");
-      imprime(list);
-      selecao_natural(arquivo, list, 6, 100, 6);
+      ImprimeNomes(list);
+      SelecaoNatural(arquivo, list, 6, 100, 6);
       break;
     case 7:
       arquivo = fopen("dados.dat", "rb");
