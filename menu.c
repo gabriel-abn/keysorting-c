@@ -44,6 +44,11 @@ Lista *iniciarLista()
   Lista *list = cria("p1.dat", cria("p2.dat", cria("p3.dat", cria("p4.dat", cria("p5.dat", cria("p6.dat", cria("p7.dat", cria("p8.dat", cria("p9.dat", cria("p10.dat", NULL))))))))));
 }
 
+Lista *iniciarListaSubstituicao()
+{
+  Lista *list = cria("p1s.dat", cria("p2s.dat", cria("p3s.dat", cria("p4s.dat", cria("p5s.dat", cria("p6s.dat", cria("p7s.dat", cria("p8s.dat", cria("p9s.dat", cria("p10s.dat", NULL))))))))));
+}
+
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
 {
   bool ordenado = false;
@@ -158,14 +163,25 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       break;
     case 7:
       arquivo = fopen("dados.dat", "rb");
-      selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
-      // FILE *particao = fopen("particao.dat", "rb");
-      // for (int i = 0; i < quantidadeFuncionario; i++)
-      // {
-      //     fseek(particao, i * sizeof(Funcionario), SEEK_SET);
-      //     Funcionario show = *RecuperarFuncionario(particao);
-      //     ImprimirFuncionario(&show);
-      // }
+      Lista *lista = iniciarListaSubstituicao();
+      if (arquivo == NULL)
+      {
+        printf("Erro!\n");
+        break;
+      }
+      printf("chamada selecao\n");
+      imprime(lista);
+      selecaoSubstituicao(arquivo, 6, quantidadeFuncionario, lista);
+      
+      FILE *particao = fopen("p2s.dat", "rb");
+      for (int i = 0; i < quantidadeFuncionario; i++)
+      {
+        if(!feof(particao)){
+          fseek(particao, i * sizeof(Funcionario), SEEK_SET);
+          Funcionario show = *RecuperarFuncionario(particao);
+          ImprimirFuncionario(&show);
+        }
+      }
       break;
 
     default:
