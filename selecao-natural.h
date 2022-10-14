@@ -29,14 +29,14 @@ typedef struct Lista
 // /*inverte lista encadeada de nomes*/
 // void inverte(Lista *nomes);
 
-char *cria_str(char *str);
-Lista *cria(char *nome, Lista *prox);
-void libera(Lista *nomes);
-int conta(Lista *nomes);
-void inverte(Lista *nomes);
-void imprime(Lista *nomes);
-int menorChave(Funcionario *array[], int size);
-void salva_ArqSaida(FILE *saida, int indice, Funcionario *item);
-void selecao_natural(FILE *arq, Lista *nome_arquivos_saida, int M, int nFunc, int n);
+char *CriarString(char *str);
+Lista *CriarLista(char *nome, Lista *prox);
+void LiberarLista(Lista *nomes);
+int QuantidadeArquivos(Lista *nomes);
+void InverterLista(Lista *nomes);
+void ImprimeNomes(Lista *nomes);
+int MenorChave(Funcionario *array[], int size);
+void SalvarArquivoDeSaida(FILE *saida, int indice, Funcionario *item);
+void SelecaoNatural(FILE *arq, Lista *nome_arquivos_saida, int M, int nFunc, int n);
 
 #endif
