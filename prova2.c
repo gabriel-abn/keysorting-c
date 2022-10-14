@@ -228,7 +228,7 @@ void selecaoSubstituicao(FILE *arq, int m, int max, Lista *nomesArquivos)
       if (arquivoSaida != NULL)
       {
         // printf("======Salva menor registro no Arq Saida: %d -- %s \n", menorRegistro->codigo, menorRegistro->nome);
-        salva_ArqSaida(arquivoSaida, posArqSaida, menorRegistro);
+        SalvarArquivoDeSaida(arquivoSaida, posArqSaida, menorRegistro);
         posArqSaida++;
       }
 
@@ -246,7 +246,7 @@ void selecaoSubstituicao(FILE *arq, int m, int max, Lista *nomesArquivos)
       {
         posMenorArray = menorChaveComCongelados(array, m, congelados);
         menorRegistro = array[posMenorArray];
-        salva_ArqSaida(arquivoSaida, posArqSaida, menorRegistro);
+        SalvarArquivoDeSaida(arquivoSaida, posArqSaida, menorRegistro);
         break;
       }
       if (proxRegistroEntrada->codigo < menorRegistro->codigo)
@@ -275,7 +275,7 @@ void selecaoSubstituicao(FILE *arq, int m, int max, Lista *nomesArquivos)
           menorRegistro = array[posMenorArray];
           if (arquivoSaida != NULL)
           {
-            salva_ArqSaida(arquivoSaida, posArqSaida, menorRegistro);
+            SalvarArquivoDeSaida(arquivoSaida, posArqSaida, menorRegistro);
             posArqSaida++;
           }
 

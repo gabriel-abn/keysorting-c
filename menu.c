@@ -46,7 +46,7 @@ Lista *iniciarLista()
 
 Lista *iniciarListaSubstituicao()
 {
-  Lista *list = cria("p1s.dat", cria("p2s.dat", cria("p3s.dat", cria("p4s.dat", cria("p5s.dat", cria("p6s.dat", cria("p7s.dat", cria("p8s.dat", cria("p9s.dat", cria("p10s.dat", NULL))))))))));
+  Lista *list = CriarLista("p1s.dat", CriarLista("p2s.dat", CriarLista("p3s.dat", CriarLista("p4s.dat", CriarLista("p5s.dat", CriarLista("p6s.dat", CriarLista("p7s.dat", CriarLista("p8s.dat", CriarLista("p9s.dat", CriarLista("p10s.dat", NULL))))))))));
 }
 
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
@@ -170,10 +170,10 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
         break;
       }
       printf("chamada selecao\n");
-      imprime(lista);
+      ImprimeNomes(lista);
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario, lista);
       
-      FILE *particao = fopen("p2s.dat", "rb");
+      FILE *particao = fopen("p1s.dat", "rb");
       for (int i = 0; i < quantidadeFuncionario; i++)
       {
         if(!feof(particao)){
