@@ -47,6 +47,11 @@ Lista *iniciarLista()
   return list;
 }
 
+Lista *iniciarListaSubstituicao()
+{
+  Lista *list = CriarLista("p1s.dat", CriarLista("p2s.dat", CriarLista("p3s.dat", CriarLista("p4s.dat", CriarLista("p5s.dat", CriarLista("p6s.dat", CriarLista("p7s.dat", CriarLista("p8s.dat", CriarLista("p9s.dat", CriarLista("p10s.dat", NULL))))))))));
+}
+
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
 {
   bool ordenado = false;
@@ -170,14 +175,25 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       break;
     case 6:
       arquivo = fopen("dados.dat", "rb");
-      selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
-      // FILE *particao = fopen("particao.dat", "rb");
-      // for (int i = 0; i < quantidadeFuncionario; i++)
-      // {
-      //     fseek(particao, i * sizeof(Funcionario), SEEK_SET);
-      //     Funcionario show = *RecuperarFuncionario(particao);
-      //     ImprimirFuncionario(&show);
-      // }
+      Lista *lista = iniciarListaSubstituicao();
+      if (arquivo == NULL)
+      {
+        printf("Erro!\n");
+        break;
+      }
+      printf("chamada selecao\n");
+      ImprimeNomes(lista);
+      selecaoSubstituicao(arquivo, 6, quantidadeFuncionario, lista);
+      
+      FILE *particao = fopen("p1s.dat", "rb");
+      for (int i = 0; i < quantidadeFuncionario; i++)
+      {
+        if(!feof(particao)){
+          fseek(particao, i * sizeof(Funcionario), SEEK_SET);
+          Funcionario show = *RecuperarFuncionario(particao);
+          ImprimirFuncionario(&show);
+        }
+      }
       break;
 
     default:
