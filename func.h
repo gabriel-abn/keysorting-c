@@ -8,6 +8,11 @@
 
 #define MAXTAM 2
 
+typedef struct{
+    int matricula;
+    char nome[50];
+}Pessoa;
+
 typedef struct TipoFuncionario
 {
   int codigo;

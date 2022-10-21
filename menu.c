@@ -7,6 +7,7 @@
 #include "func.h"
 #include "prova2.h"
 #include "selecao-natural.h"
+#define M 199
 
 void MENU_OPCOES()
 {
@@ -19,7 +20,10 @@ void MENU_OPCOES()
   printf("\n4. CRIAR NOVA BASE DE DADOS\n");
   printf("\n5. SELECAO NATURAL\n");
   printf("\n6. SELECAO POR SUBSTITUICAO\n");
-  printf("\n7. SAIR\n");
+  printf("\n7. CARREGAR BANCO DE FUNCIONARIOS PARA TABELA HASH\n");
+  printf("\n8. BUSCAR FUNCIONARIO NA TABELA HASH\n");
+  printf("\n9. IMPRIMIR CONTEUDO DA TABELA HASH\n");
+  printf("\n0. SAIR ******************************\n\n");
 }
 
 int OPCAO()
@@ -39,7 +43,63 @@ void CLEAR_CONSOLE()
   printf("\n--------------------------------\n");
   c = getchar();
   system("clear");
+  system("cls");
 }
+
+Funcionario tabelaHash[M];
+
+void inicializarTabela(){
+    int i;
+    for(i = 0; i < M; i++)
+        tabelaHash[i].codigo = -1;
+}
+int gerarCodigoHash(int chave){
+    return chave % M;
+}
+void carregarTabela(FILE *arq, FILE *table, int tam_arq){
+  for (int i = 0; i < tam_arq; i++)
+  {
+    fseek(arq, i * sizeof(Funcionario), SEEK_SET);
+    Funcionario *funcionario = RecuperarFuncionario(arq);
+    int cod = funcionario->codigo;
+    int indice = gerarCodigoHash(cod);
+    while(tabelaHash[indice].codigo != -1)
+        indice = gerarCodigoHash(indice + 1);
+    tabelaHash[indice] = *funcionario;
+    /*
+    //Quando tabela for arquivo
+    fseek(table, indice * sizeof(Funcionario), SEEK_SET);
+    SalvarEmArquivo(funcionario, table);
+    */
+  }
+}
+Pessoa* buscar(int chave){
+    int indice = gerarCodigoHash(chave);
+    while(tabelaHash[indice].codigo != -1){
+        if(tabelaHash[indice].codigo == chave)
+            ImprimirFuncionario(&tabelaHash[indice]);
+        else
+            indice = gerarCodigoHash(indice + 1);
+    }
+    return NULL;
+}
+void imprimir(){
+    int i;
+    printf("\n------------------------TABELA---------------------------\n");
+    for(i = 0; i < M; i++){
+        if(tabelaHash[i].codigo != -1){
+            printf("%2d =", i);
+            ImprimirFuncionario(&tabelaHash[i]);
+            printf("\n");
+        }else{
+            printf("%2d =\n", i);
+        }
+    }
+    printf("\n----------------------------------------------------------\n");
+}
+int chave;
+
+
 
 Lista *iniciarLista()
 {
@@ -52,7 +112,7 @@ Lista *iniciarListaSubstituicao()
   Lista *list = CriarLista("p1s.dat", CriarLista("p2s.dat", CriarLista("p3s.dat", CriarLista("p4s.dat", CriarLista("p5s.dat", CriarLista("p6s.dat", CriarLista("p7s.dat", CriarLista("p8s.dat", CriarLista("p9s.dat", CriarLista("p10s.dat", NULL))))))))));
 }
 
-void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
+void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco, Pessoa *p)
 {
   bool ordenado = false;
   int teste;
@@ -67,9 +127,11 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
     op = OPCAO();
     switch (op)
     {
+      case 0:
+        printf("Saindo...\n");
+        exit(0);
+        break;
     case 1:
-      // Questão 2
-      // PROCURA SEQUENCIAL
       if (arquivo == NULL)
       {
         printf("\nArquivo nao encontrado. Crie uma base de dados nova...\n");
@@ -93,8 +155,6 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       CLEAR_CONSOLE();
       break;
     case 2:
-      // Questão 4
-      // PROCURA BINÁRIA
       banco = fopen("BANCO_DE_DADOS.dat", "rb");
       if (arquivo == NULL)
       {
@@ -125,8 +185,6 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       CLEAR_CONSOLE();
       break;
     case 3:
-      // Questão 3
-      // KEYSORTING
       if (arquivo == NULL)
       {
         printf("\nArquivo nao encontrado. Crie uma base de dados nova...\n");
@@ -139,8 +197,6 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       ordenado = true;
       break;
     case 4:
-      // Questão 1
-      // CRIAR BASE DE DADOS NOVA
       arquivo = fopen("dados.dat", "wb+");
       CriarBaseDeDados(arquivo, quantidadeFuncionario, codigos);
       printf("Base de dados criada!\n");
@@ -189,19 +245,34 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
           ImprimirFuncionario(&show);
         }
       }
+      CLEAR_CONSOLE();
       break;
-
+      // HASHING //
       case 7:
-        // Funcionario *tabelaHash = inicializaHash(tabelaHash);
-        // arquivo = fopen("dados.dat", "rb");
-        // imprimirTabela(tabelaHash);
-
-      break;
+        arquivo = fopen("dados.dat", "rb");
+        FILE *table = fopen("HASH.dat", "rb+");
+        carregarTabela(arquivo,table,quantidadeFuncionario);
+        CLEAR_CONSOLE();
+        break;
+      case 8:
+        printf("Digite a matricula a ser buscada: ");
+        scanf("%d", &chave);
+        p = buscar(chave);
+        if(p){
+          printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
+          CLEAR_CONSOLE();
+        }else{
+          printf("\nMatricula nao encontrada!\n");
+        }
+        break;
+      case 9:
+        imprimir();
+        CLEAR_CONSOLE();
+        break;
 
     default:
       printf("Opcao invalida!\n");
       CLEAR_CONSOLE();
-      exit(0);
       break;
     }
   } while (op != 5);
