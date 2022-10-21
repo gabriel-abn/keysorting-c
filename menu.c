@@ -7,7 +7,7 @@
 #include "func.h"
 #include "prova2.h"
 #include "selecao-natural.h"
-#define M 199
+#define M 101
 
 void MENU_OPCOES()
 {
@@ -21,8 +21,7 @@ void MENU_OPCOES()
   printf("\n5. SELECAO NATURAL\n");
   printf("\n6. SELECAO POR SUBSTITUICAO\n");
   printf("\n7. CARREGAR BANCO DE FUNCIONARIOS PARA TABELA HASH\n");
-  printf("\n8. BUSCAR FUNCIONARIO NA TABELA HASH\n");
-  printf("\n9. IMPRIMIR CONTEUDO DA TABELA HASH\n");
+  printf("\n8. IMPRIMIR CONTEUDO DA TABELA HASH\n");
   printf("\n0. SAIR ******************************\n\n");
 }
 
@@ -49,58 +48,65 @@ void CLEAR_CONSOLE()
 Funcionario tabelaHash[M];
 FILE *Hash;
 
-void inicializarTabela(){
-    int i;
-    for(i = 0; i < M; i++)
-        tabelaHash[i].codigo = -1;
+void inicializarTabela()
+{
+  int i;
+  for (i = 0; i < M; i++)
+    tabelaHash[i].codigo = -1;
 }
-int gerarCodigoHash(int chave){
-    return chave % M;
+int gerarCodigoHash(int chave)
+{
+  return chave % M;
 }
-void carregarTabela(FILE *arq, FILE *table, int tam_arq){
+void carregarTabela(FILE *arq, FILE *table, int tam_arq)
+{
   for (int i = 0; i < tam_arq; i++)
   {
     fseek(arq, i * sizeof(Funcionario), SEEK_SET);
     Funcionario *funcionario = RecuperarFuncionario(arq);
     int cod = funcionario->codigo;
     int indice = gerarCodigoHash(cod);
-    while(tabelaHash[indice].codigo != -1)
-        indice = gerarCodigoHash(indice + 1);
+    while (tabelaHash[indice].codigo != -1)
+      indice = gerarCodigoHash(indice + 1);
     // tabelaHash[indice] = *funcionario;
-    
+
     fseek(table, indice * sizeof(Funcionario), SEEK_SET);
     SalvarEmArquivo(funcionario, table);
-    
   }
 }
-Pessoa* buscar(int chave){
-    int indice = gerarCodigoHash(chave);
-    while(tabelaHash[indice].codigo != -1){
-        if(tabelaHash[indice].codigo == chave)
-            ImprimirFuncionario(&tabelaHash[indice]);
-        else
-            indice = gerarCodigoHash(indice + 1);
-    }
-    return NULL;
+Pessoa *buscar(int chave)
+{
+  int indice = gerarCodigoHash(chave);
+  while (tabelaHash[indice].codigo != -1)
+  {
+    if (tabelaHash[indice].codigo == chave)
+      ImprimirFuncionario(&tabelaHash[indice]);
+    else
+      indice = gerarCodigoHash(indice + 1);
+  }
+  return NULL;
 }
-void imprimir(FILE *arq){
-    printf("\n------------------------TABELA---------------------------\n");
-    for(int i = 0; i < M; i++){
-      fseek(arq, i * sizeof(Funcionario), SEEK_SET);
-      Funcionario *funcionario = RecuperarFuncionario(arq);
-        if(funcionario->codigo != -1){
-            printf("%2d =", i);
-            ImprimirFuncionario(funcionario);
-            printf("\n");
-        }else{
-            printf("%2d =\n", i);
-        }
+void imprimir(FILE *arq)
+{
+  printf("\n------------------------TABELA---------------------------\n");
+  for (int i = 0; i < M; i++)
+  {
+    fseek(arq, i * sizeof(Funcionario), SEEK_SET);
+    Funcionario *funcionario = RecuperarFuncionario(arq);
+    if (funcionario->codigo != -1)
+    {
+      printf("%2d =", i);
+      ImprimirFuncionario(funcionario);
+      printf("\n");
     }
-    printf("\n----------------------------------------------------------\n");
+    else
+    {
+      printf("%2d =\n", i);
+    }
+  }
+  printf("\n----------------------------------------------------------\n");
 }
 int chave;
-
-
 
 Lista *iniciarLista()
 {
@@ -128,10 +134,10 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
     op = OPCAO();
     switch (op)
     {
-      case 0:
-        printf("Saindo...\n");
-        exit(0);
-        break;
+    case 0:
+      printf("Saindo...\n");
+      exit(0);
+      break;
     case 1:
       if (arquivo == NULL)
       {
@@ -236,11 +242,12 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       printf("chamada selecao\n");
       ImprimeNomes(lista);
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario, lista);
-      
+
       FILE *particao = fopen("p1s.dat", "rb");
       for (int i = 0; i < quantidadeFuncionario; i++)
       {
-        if(!feof(particao)){
+        if (!feof(particao))
+        {
           fseek(particao, i * sizeof(Funcionario), SEEK_SET);
           Funcionario show = *RecuperarFuncionario(particao);
           ImprimirFuncionario(&show);
@@ -248,28 +255,31 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       }
       CLEAR_CONSOLE();
       break;
-      // HASHING //
-      case 7:
-        arquivo = fopen("dados.dat", "rb");
-        Hash = fopen("HASH.dat", "rb+");
-        carregarTabela(arquivo,Hash,quantidadeFuncionario);
-        CLEAR_CONSOLE();
-        break;
-      case 8:
-        // printf("Digite a matricula a ser buscada: ");
-        // scanf("%d", &chave);
-        // if(p){
-        //   printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
-        //   CLEAR_CONSOLE();
-        // }else{
-        //   printf("\nMatricula nao encontrada!\n");
-        // }
-        break;
-      case 9:
-        Hash = fopen("HASH.dat", "rb");
-        imprimir(Hash);
-        CLEAR_CONSOLE();
-        break;
+    // HASHING //
+    case 7:
+      arquivo = fopen("dados.dat", "rb");
+      Hash = fopen("HASH.dat", "wb+");
+      carregarTabela(arquivo, Hash, quantidadeFuncionario);
+      CLEAR_CONSOLE();
+      break;
+    case 9:
+      // printf("Digite a matricula a ser buscada: ");
+      // scanf("%d", &chave);
+      // if (p)
+      // {
+      //   printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
+      //   CLEAR_CONSOLE();
+      // }
+      // else
+      // {
+      //   printf("\nMatricula nao encontrada!\n");
+      // }
+      break;
+    case 8:
+      Hash = fopen("HASH.dat", "rb");
+      imprimir(Hash);
+      CLEAR_CONSOLE();
+      break;
 
     default:
       printf("Opcao invalida!\n");
