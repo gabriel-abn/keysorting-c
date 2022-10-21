@@ -147,11 +147,6 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       CLEAR_CONSOLE();
       ordenado = false;
       break;
-    case 7:
-      // SAIR
-      printf("Saindo...\n");
-      exit(0);
-      break;
     case 5:
       arquivo = fopen("dados.dat", "rb");
       Lista *list = iniciarLista();
@@ -196,9 +191,17 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       }
       break;
 
+      case 7:
+        // Funcionario *tabelaHash = inicializaHash(tabelaHash);
+        // arquivo = fopen("dados.dat", "rb");
+        // imprimirTabela(tabelaHash);
+
+      break;
+
     default:
       printf("Opcao invalida!\n");
       CLEAR_CONSOLE();
+      exit(0);
       break;
     }
   } while (op != 5);
