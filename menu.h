@@ -6,21 +6,11 @@
 #include <string.h>
 #include "func.h"
 
-void inicializarTabela();
-
+void inicializarTabela(FILE *arq);
 void carregarTabela(FILE *arq, FILE *table, int tam_arq);
-
-// função de espalhamento (resto da divisão da chave por M)
 int gerarCodigoHash();
-
-// função para ler e retornar uma pessoa
-Pessoa lerPessoa();
-
-// inserir uma pessoa na tabela
 void inserir();
-
-Pessoa* buscar(int chave);
-
+Funcionario* buscaHash(FILE *arq, int chave);
 void imprimir(FILE *arq);
 void MENU_OPCOES();
 void CLEAR_CONSOLE();
