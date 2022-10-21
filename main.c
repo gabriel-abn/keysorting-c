@@ -10,7 +10,7 @@
 int main()
 {
 int op, chave;
-    inicializarTabela();
+    // inicializarTabela();
   FILE *arquivo;
   clock_t tempoBinarioComeco, tempoBinarioFim;
   double tempoExecucaoBinario = 0.0;
