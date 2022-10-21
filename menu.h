@@ -21,7 +21,7 @@ void inserir();
 
 Pessoa* buscar(int chave);
 
-void imprimir();
+void imprimir(FILE *arq);
 void MENU_OPCOES();
 void CLEAR_CONSOLE();
 int OPCAO();

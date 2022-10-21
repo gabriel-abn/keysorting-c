@@ -65,12 +65,11 @@ void carregarTabela(FILE *arq, FILE *table, int tam_arq){
     int indice = gerarCodigoHash(cod);
     while(tabelaHash[indice].codigo != -1)
         indice = gerarCodigoHash(indice + 1);
-    tabelaHash[indice] = *funcionario;
-    /*
-    //Quando tabela for arquivo
+    // tabelaHash[indice] = *funcionario;
+    
     fseek(table, indice * sizeof(Funcionario), SEEK_SET);
     SalvarEmArquivo(funcionario, table);
-    */
+    
   }
 }
 Pessoa* buscar(int chave){
@@ -83,13 +82,14 @@ Pessoa* buscar(int chave){
     }
     return NULL;
 }
-void imprimir(){
-    int i;
+void imprimir(FILE *arq){
     printf("\n------------------------TABELA---------------------------\n");
-    for(i = 0; i < M; i++){
-        if(tabelaHash[i].codigo != -1){
+    for(int i = 0; i < M; i++){
+      fseek(arq, i * sizeof(Funcionario), SEEK_SET);
+      Funcionario *funcionario = RecuperarFuncionario(arq);
+        if(funcionario->codigo != -1){
             printf("%2d =", i);
-            ImprimirFuncionario(&tabelaHash[i]);
+            ImprimirFuncionario(funcionario);
             printf("\n");
         }else{
             printf("%2d =\n", i);
@@ -266,7 +266,8 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco, P
         }
         break;
       case 9:
-        imprimir();
+        FILE *tabelaHASH = fopen("HASH.dat", "rb");
+        imprimir(tabelaHASH);
         CLEAR_CONSOLE();
         break;
 
