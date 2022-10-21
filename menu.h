@@ -6,7 +6,7 @@
 #include <string.h>
 #include "func.h"
 
-void inicializarTabela(FILE *arq);
+void inicializarTabela();
 void carregarTabela(FILE *arq, FILE *table, int tam_arq);
 int gerarCodigoHash();
 void inserir();

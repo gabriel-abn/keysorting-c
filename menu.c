@@ -49,7 +49,7 @@ void CLEAR_CONSOLE()
 Funcionario tabelaHash[M];
 FILE *Hash;
 
-void inicializarTabela(FILE *arq){
+void inicializarTabela(){
     int i;
     for(i = 0; i < M; i++)
         tabelaHash[i].codigo = -1;
@@ -73,18 +73,15 @@ void carregarTabela(FILE *arq, FILE *table, int tam_arq){
     
   }
 }
-Funcionario* buscaHash(FILE *arq, int chave){
-    // int indice = gerarCodigoHash(chave);
-    // Funcionario *funcionario;
-    // do{
-    //   fseek(arq, indice * sizeof(Funcionario), SEEK_SET);
-    //   funcionario = RecuperarFuncionario(arq);
-    //     if(funcionario->codigo == chave)
-    //         ImprimirFuncionario(funcionario);
-    //     else
-    //         indice = gerarCodigoHash(indice + 1);
-    // }while(funcionario->codigo != NULL && funcionario->codigo != chave);
-    // return NULL;
+Pessoa* buscar(int chave){
+    int indice = gerarCodigoHash(chave);
+    while(tabelaHash[indice].codigo != -1){
+        if(tabelaHash[indice].codigo == chave)
+            ImprimirFuncionario(&tabelaHash[indice]);
+        else
+            indice = gerarCodigoHash(indice + 1);
+    }
+    return NULL;
 }
 void imprimir(FILE *arq){
     printf("\n------------------------TABELA---------------------------\n");
@@ -256,20 +253,21 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
         arquivo = fopen("dados.dat", "rb");
         Hash = fopen("HASH.dat", "rb+");
         carregarTabela(arquivo,Hash,quantidadeFuncionario);
-        fclose(Hash);
         CLEAR_CONSOLE();
         break;
       case 8:
-        // printf("Digite o codigo a ser buscado: ");
-        // Hash = fopen("HASH.dat", "rb");
+        // printf("Digite a matricula a ser buscada: ");
         // scanf("%d", &chave);
-        // Funcionario retorno = buscaHash(Hash,chave);
-        // fclose(Hash);
-        // break;
+        // if(p){
+        //   printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
+        //   CLEAR_CONSOLE();
+        // }else{
+        //   printf("\nMatricula nao encontrada!\n");
+        // }
+        break;
       case 9:
         Hash = fopen("HASH.dat", "rb");
         imprimir(Hash);
-        fclose(Hash);
         CLEAR_CONSOLE();
         break;
 
