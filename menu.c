@@ -17,7 +17,9 @@ void MENU_OPCOES()
   printf("\n2. PROCURAR FUNCIONARIO - BUSCA BINARIA\n");
   printf("\n3. ORDENAR VIA KEYSORTING\n");
   printf("\n4. CRIAR NOVA BASE DE DADOS\n");
-  printf("\n5. SAIR\n");
+  printf("\n5. SELECAO NATURAL\n");
+  printf("\n6. SELECAO POR SUBSTITUICAO\n");
+  printf("\n7. SAIR\n");
 }
 
 int OPCAO()
@@ -42,6 +44,7 @@ void CLEAR_CONSOLE()
 Lista *iniciarLista()
 {
   Lista *list = CriarLista("p1.dat", CriarLista("p2.dat", CriarLista("p3.dat", CriarLista("p4.dat", CriarLista("p5.dat", CriarLista("p6.dat", CriarLista("p7.dat", CriarLista("p8.dat", CriarLista("p9.dat", CriarLista("p10.dat", NULL))))))))));
+  return list;
 }
 
 void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
@@ -139,12 +142,12 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
       CLEAR_CONSOLE();
       ordenado = false;
       break;
-    case 5:
+    case 7:
       // SAIR
       printf("Saindo...\n");
       exit(0);
       break;
-    case 6:
+    case 5:
       arquivo = fopen("dados.dat", "rb");
       Lista *list = iniciarLista();
       if (arquivo == NULL)
@@ -152,11 +155,20 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
         printf("Erro!\n");
         break;
       }
-      printf("chamada selecao\n");
       ImprimeNomes(list);
       SelecaoNatural(arquivo, list, 6, 100, 6);
+
+      Funcionario aux;
+      FILE *teste;
+      for (int i = 0; i < 10; i++)
+      {
+        teste = fopen("p1.dat", "rb");
+        fseek(teste, i * sizeof(Funcionario), SEEK_SET);
+        ImprimirFuncionario(RecuperarFuncionario(teste));
+      }
+
       break;
-    case 7:
+    case 6:
       arquivo = fopen("dados.dat", "rb");
       selecaoSubstituicao(arquivo, 6, quantidadeFuncionario);
       // FILE *particao = fopen("particao.dat", "rb");

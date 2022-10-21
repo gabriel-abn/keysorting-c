@@ -13,7 +13,6 @@ char *CriarString(char *str)
 
 Lista *CriarLista(char *nome, Lista *prox)
 {
-  printf("cria\n");
   Lista *nomes = (Lista *)malloc(sizeof(Lista));
   nomes->nome = nome;
   nomes->prox = prox;

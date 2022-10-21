@@ -37,6 +37,6 @@ void InverterLista(Lista *nomes);
 void ImprimeNomes(Lista *nomes);
 int MenorChave(Funcionario *array[], int size);
 void SalvarArquivoDeSaida(FILE *saida, int indice, Funcionario *item);
-void SelecaoNatural(FILE *arq, Lista *nome_arquivos_saida, int M, int nFunc, int n);
+void SelecaoNatural(FILE *arq, Lista *nomesArquivos, int elementosPorParticao, int qtdFuncionarios, int tamReservatorio);
 
 #endif
