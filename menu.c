@@ -47,6 +47,7 @@ void CLEAR_CONSOLE()
 }
 
 Funcionario tabelaHash[M];
+FILE *Hash;
 
 void inicializarTabela(){
     int i;
@@ -112,7 +113,7 @@ Lista *iniciarListaSubstituicao()
   Lista *list = CriarLista("p1s.dat", CriarLista("p2s.dat", CriarLista("p3s.dat", CriarLista("p4s.dat", CriarLista("p5s.dat", CriarLista("p6s.dat", CriarLista("p7s.dat", CriarLista("p8s.dat", CriarLista("p9s.dat", CriarLista("p10s.dat", NULL))))))))));
 }
 
-void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco, Pessoa *p)
+void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
 {
   bool ordenado = false;
   int teste;
@@ -250,24 +251,23 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco, P
       // HASHING //
       case 7:
         arquivo = fopen("dados.dat", "rb");
-        FILE *table = fopen("HASH.dat", "rb+");
-        carregarTabela(arquivo,table,quantidadeFuncionario);
+        Hash = fopen("HASH.dat", "rb+");
+        carregarTabela(arquivo,Hash,quantidadeFuncionario);
         CLEAR_CONSOLE();
         break;
       case 8:
-        printf("Digite a matricula a ser buscada: ");
-        scanf("%d", &chave);
-        p = buscar(chave);
-        if(p){
-          printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
-          CLEAR_CONSOLE();
-        }else{
-          printf("\nMatricula nao encontrada!\n");
-        }
+        // printf("Digite a matricula a ser buscada: ");
+        // scanf("%d", &chave);
+        // if(p){
+        //   printf("\n\tMatricula: %d \tNome: %s\n", p->matricula, p->nome);
+        //   CLEAR_CONSOLE();
+        // }else{
+        //   printf("\nMatricula nao encontrada!\n");
+        // }
         break;
       case 9:
-        FILE *tabelaHASH = fopen("HASH.dat", "rb");
-        imprimir(tabelaHASH);
+        Hash = fopen("HASH.dat", "rb");
+        imprimir(Hash);
         CLEAR_CONSOLE();
         break;
 
