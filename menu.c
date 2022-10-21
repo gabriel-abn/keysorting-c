@@ -258,7 +258,22 @@ void MENU(FILE *arquivo, int quantidadeFuncionario, int *codigos, FILE *banco)
     // HASHING //
     case 7:
       arquivo = fopen("dados.dat", "rb");
+      if (!arquivo)
+      {
+        printf("Banco de dados indisponivel\n");
+        CLEAR_CONSOLE();
+        break;
+      }
+
       Hash = fopen("HASH.dat", "wb+");
+
+      if (!Hash)
+      {
+        printf("Arquivo hash indisponivel!\n");
+        CLEAR_CONSOLE();
+        break;
+      }
+
       carregarTabela(arquivo, Hash, quantidadeFuncionario);
       CLEAR_CONSOLE();
       break;
