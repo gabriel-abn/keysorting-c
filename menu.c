@@ -20,7 +20,7 @@ void MENU_OPCOES()
   printf("\n4. CRIAR NOVA BASE DE DADOS\n");
   printf("\n5. SELECAO NATURAL\n");
   printf("\n6. SELECAO POR SUBSTITUICAO\n");
-  printf("\n7. CARREGAR BANCO DE FUNCIONARIOS PARA TABELA HASH\n");
+  printf("\n7. CARREGAR BANCO DE FUNCIONARIOS PARA TABELA HASH => ENDERECAM. ABERTO LINEAR\n");
   printf("\n8. IMPRIMIR CONTEUDO DA TABELA HASH\n");
   printf("\n0. SAIR ******************************\n\n");
 }
